@@ -52,6 +52,11 @@ ROOT_URLCONF = 'etwente.urls'
 WSGI_APPLICATION = 'etwente.wsgi.application'
 
 
+# See: https://docs.djangoproject.com/en/dev/ref/settings/#template-dirs
+TEMPLATE_DIRS = (
+    os.path.normpath(os.path.join(BASE_DIR, 'templates')),
+)
+
 # Database
 # https://docs.djangoproject.com/en/1.6/ref/settings/#databases
 
@@ -80,6 +85,10 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/1.6/howto/static-files/
 
 STATIC_URL = '/static/'
+
+STATICFILES_DIRS = (
+    os.path.join(BASE_DIR, 'assets'),
+)
 
 # Openshfit integration
 ON_OPENSHIFT = 'OPENSHIFT_APP_NAME' in os.environ
