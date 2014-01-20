@@ -1,0 +1,21 @@
+#!/bin/bash
+# This deploy hook gets executed after dependencies are resolved and the
+# build hook has been run but before the application has been started back
+# up again.  This script gets executed directly, so it could be python, php,
+# ruby, etc.
+
+source $OPENSHIFT_HOMEDIR/python/virtenv/bin/activate
+
+MANAGE_PY="${OPENSHIFT_REPO_DIR}wsgi/manage.py"
+
+echo "Executing 'python ${MANAGE_PY} syncdb --noinput'"
+python "$MANAGE_PY" syncdb --noinput
+
+if [ ! -f "$OPENSHIFT_DATA_DIR"/CREDENTIALS ]
+then
+    echo "Changing admin password"
+    python "$OPENSHIFT_REPO_DIR".openshift/action_hooks/secure_db.py | tee ${OPENSHIFT_DATA_DIR}/CREDENTIALS
+fi
+
+echo "Executing 'python $MANAGE_PY collectstatic --noinput'"
+python "$MANAGE_PY" collectstatic --noinput
