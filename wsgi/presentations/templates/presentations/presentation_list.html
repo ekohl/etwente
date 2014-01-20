@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+
+{% block content %}
+<h1>Presentations</h1>
+{% for presentation in presentation_list %}
+<div class="row">
+  <div class="container">
+    <h2>
+      {{ presentation }}
+      <small>By {{ presentation.speaker }}</small>
+    </h2>
+    <p>{{ presentation.summary|linebreaks }}</p>
+  </div>
+</div>
+{% endfor %}
+{% endblock %}
